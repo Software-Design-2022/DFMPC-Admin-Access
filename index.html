@@ -3,12 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Login</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/Google-Stylel-Login.css">
+    <link rel="stylesheet" href="assets/css/Navigation-Dark-Clean">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+
 </head>
 <body>
-    <h1>hello npm bootstrap world</h1>
+    <div class="login-card">
+        <img class="profile-img-card" src="assets/img/logo.png" alt="">
+        <p class="profile-name-card"> </p>
+        <form class="form-signin">
+            <span class="reauth-email"> </span>
+            <input id="inputEmail" class="form-control" type="email" required="" autofocus="" placeholder="Email address">
+            <input id="inputPassword" class="form-control" type="password" required="" placeholder="Password">
+            <div class="checkbox">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="formCheck-2">
+                    <label class="form-check-label" for="formCheck-2">
+                        Remember me
+                    </label>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-block btn-lg btn-signin" type="submit">Sign in</button>
+        </form>
+        <a href="#" class="forgot-password">
+            Forgot your password?
+        </a>
+    </div>
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 </body>
 </html>
