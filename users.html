@@ -59,10 +59,23 @@
                 <!-- <li class="nav-item" role="presentation"><a class="nav-link" href="login.html">Dashboards</a></li>
                 <li class="nav-item" role="presentation"><a class="nav-link" href="register.html">Schedules</a></li> -->
             </ul>
-            <button class="btn btn-secondary" type="button" href="home.html">Home</button>
-            <button class="btn btn-primary" type="button" href="index.html">Sign Out</button>
+            <button id = "home" class="btn btn-secondary" type="button" href="home.html">Home</button>
+            <button id = "out" class="btn btn-primary" type="button" href="index.html">Sign Out</button>
         </div>
     </div>
 </nav>
 <script src="index.js"></script>
+<script>
+    var sign_out = document.getElementById("out");
+
+    sign_out.addEventListener("click", function(){
+        document.location.href = "index.html";
+    });
+
+    var home_element = document.getElementById("home");
+
+    home_element.addEventListener("click", function(){
+        document.location.href = "home.html";
+    });
+</script>
 </body>

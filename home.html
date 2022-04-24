@@ -27,19 +27,23 @@
                     <!-- <li class="nav-item" role="presentation"><a class="nav-link" href="login.html">Dashboards</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="register.html">Schedules</a></li> -->
                 </ul>
-                <button class="btn btn-primary" type="button" href="index.html">Sign Out</button>
+                <button id="out" class="btn btn-primary" type="button">Sign Out</button>
             </div>
         </div>
     </nav>
-
-
-    
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-around bg-secondary mb-3">
         <!-- <a class="small" href="password.html">Forgot Password?</a> -->
-        <a class="btn btn-primary" type="button" href="users.html">Users</a>
-        <a class="btn btn-secondary" type="button" href="protocols.html">Protocols</a>
+        <a class="btn btn-primary btn-block btn-lg btn-signin" type="button" href="users.html">Users</a>
+        <a class="btn btn-primary btn-block btn-lg btn-signin" type="button" href="protocols.html">Protocols</a>
     </div>
+    <script src="/index.js" type="module"></script>
+    <script>
+        var sign_out = document.getElementById("out");
 
+        sign_out.addEventListener("click", function(){
+            document.location.href = "index.html";
+        });
+    </script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
     
 </body>

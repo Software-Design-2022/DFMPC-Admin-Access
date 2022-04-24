@@ -13,9 +13,6 @@
 
 </head>
 <body>
-
-        
-    
     <div class="login-card">
         <img class="profile-img-card" src="assets/img/logo.png" alt="">
         <p class="profile-name-card"> </p>
@@ -32,16 +29,21 @@
                 </div>
             </div>
 
-            <!-- <div id="button_container">
-                <button onclick="login()">Login</button>
-                </div> -->
-            <button class="btn btn-primary btn-block btn-lg btn-signin" type="button" onclick="login()">Sign in</button>
+            
+            <button id ="sign_in" class="btn btn-primary btn-block btn-lg btn-signin" type="button" >Sign in</button>
         </form>
         <a href="#" class="forgot-password">
             Forgot your password?
         </a>
     </div>
     <script src="/index.js" type="module"></script>
+    <script>
+        var button = document.getElementById("sign_in");
+
+        button.addEventListener("click", function(){
+            document.location.href = "home.html";
+    });
+    </script>
     
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 </body>
