@@ -7,24 +7,12 @@
     <title>Login</title>
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/Google-Stylel-Login.css">
-    <link rel="stylesheet" href="assets/css/Navigation-Dark-Clean">
+    <link rel="stylesheet" href="assets/css/Navigation-Dark-Clean.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 
 
 </head>
 <body>
-
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        //I need assistance with these imports
-        import * as firebase from 'firebase/app'; 
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
-        import {getAuth, onAuthStateChanged} from 'firebase/auth';
-
-    </script>
-        
-    
     <div class="login-card">
         <img class="profile-img-card" src="assets/img/logo.png" alt="">
         <p class="profile-name-card"> </p>
@@ -41,20 +29,22 @@
                 </div>
             </div>
 
-            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                <!-- <a class="small" href="password.html">Forgot Password?</a> -->
-                <a class="btn btn-primary" href="home.html">Login</a>
-            </div>
-            <!-- <div id="button_container">
-                <button onclick="login()">Login</button>
-                </div> -->
-            <!--<button class="btn btn-primary btn-block btn-lg btn-signin" type="submit">Sign in</button>-->
+            
+            <button id ="sign_in" class="btn btn-primary btn-block btn-lg btn-signin" type="button" >Sign in</button>
         </form>
         <a href="#" class="forgot-password">
             Forgot your password?
         </a>
     </div>
-    <script src="index.js"></script>
-    <!--<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>-->
+    <script src="/index.js" type="module"></script>
+    <script>
+        var button = document.getElementById("sign_in");
+
+        button.addEventListener("click", function(){
+            document.location.href = "home.html";
+    });
+    </script>
+    
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 </body>
 </html>
