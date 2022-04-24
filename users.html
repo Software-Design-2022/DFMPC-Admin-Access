@@ -11,5 +11,58 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
+
+        import {database} from "https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js";
+        import {auth} from "https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js"
+      </script>
+    <script>
+
+        //function to fetch user data from firebase
+        function add_users () {
+            var userDataRef = firebase.database().ref("users").orderByKey();
+            userDataRef.once("value").then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+                var key = childSnapshot.key;
+                var childData = childSnapshot.val();              
+
+                var first_name = childSnapshot.val().user_FirstName;
+                var last_name = childSnapsot.val().user_LastName;
+                var email = childSnapshot.val().email;
+                var contact = childSnapshot.val().user_ContactNo;
+
+                $("#first_name").append(first_name);
+                $("last_name").append(last_name);
+                $("email").append(email);
+                $("contact").append(contact);
+
+                });
+            });
+        }
+    </script>
+<nav class="navbar navbar-dark navbar-expand-md bg-dark navigation-clean">
+    <div class="container">
+        <a class="navbar-brand" href="#">Student Placement System</a>
+        
+        
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navcol-1">
+            <span class="visually-hidden">Toggle navigation</span>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navcol-1" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav ms-auto">
+                <!-- <li class="nav-item" role="presentation"><a class="nav-link active" href="home.html">Home</a></li> -->
+                <!-- <li class="nav-item" role="presentation"><a class="nav-link active" href="index.html">Logout</a></li> -->
+                <!-- <li class="nav-item" role="presentation"><a class="nav-link" href="login.html">Dashboards</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="register.html">Schedules</a></li> -->
+            </ul>
+            <button class="btn btn-secondary" type="button" href="home.html">Home</button>
+            <button class="btn btn-primary" type="button" href="index.html">Sign Out</button>
+        </div>
+    </div>
+</nav>
+<script src="index.js"></script>
 </body>
