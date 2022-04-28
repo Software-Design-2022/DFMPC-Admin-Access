@@ -13,10 +13,11 @@
 
 </head>
 <body>
-    <div class="login-card">
+    
+    <div class="login-card" id="login_page">
         <img class="profile-img-card" src="assets/img/logo.png" alt="">
         <p class="profile-name-card"> </p>
-        <form class="form-signin">
+        <form id = "form" class="form-signin">
             <span class="reauth-email"> </span>
             <input id="inputEmail" class="form-control" type="email" required="" autofocus="" placeholder="Email address">
             <input id="inputPassword" class="form-control" type="password" required="" placeholder="Password">
@@ -29,23 +30,71 @@
                 </div>
             </div>
 
-            
-            <button id ="sign_in" class="btn btn-primary btn-block btn-lg btn-signin" type="button" >Sign in</button>
+            <input type="submit" class="btn btn-primary btn-block btn-lg btn-signin" value="Login" id="sign_in"/>
         </form>
         <a href="#" class="forgot-password">
             Forgot your password?
         </a>
     </div>
-    <script src="/index.js" type="module"></script>
-    <script>
-        var button = document.getElementById("sign_in");
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
+        import {getAuth, onAuthStateChanged, signInWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyAZVQZO8XWR0UTPoSMLrRN7nSltUDW9Xzs",
+          authDomain: "dfmpc-student-placement-system.firebaseapp.com",
+          databaseURL: "https://dfmpc-student-placement-system-default-rtdb.europe-west1.firebasedatabase.app",
+          projectId: "dfmpc-student-placement-system",
+          storageBucket: "dfmpc-student-placement-system.appspot.com",
+          messagingSenderId: "295214875936",
+          appId: "1:295214875936:web:546dcdb4f822d1c4c84345",
+          measurementId: "G-1JPG0HXVWQ"
+        };
+      
+        // Initialize Firebase and variables
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth();
+        const login_page = document.getElementById("login_page");
+        const form = document.getElementById("form");
 
-        button.addEventListener("click", function(){
-            document.location.href = "home.html";
-            alert("You are signed in");
-    });
-    </script>
-    
+        onAuthStateChanged(auth, (user) => {
+            if (user)
+            //user is signed in
+            // alert ("Login successful");
+            // 
+            return false;
+        })
+
+        //add event listener to submit button in form so that once User logs in, page redirects to HomePage.
+        form.addEventListener("submit", (event) =>{
+        event.preventDefault();
+
+        const email = document.getElementById("inputEmail").value;
+        const password = document.getElementById("inputPassword").value;
+
+        console.log(email," ", password)
+
+
+        signInWithEmailAndPassword(auth, email, password)
+        .then((user) => {
+            if (user) {
+            alert("Login Successful");
+            window.location = "home.html";
+            }
+        })
+        .catch((error) => {
+        console.log("error", error);
+        alert("Email or Password is incorrect. Please try again");
+        });
+    })
+      </script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 </body>
 </html>
