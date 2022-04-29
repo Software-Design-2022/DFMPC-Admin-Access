@@ -75,23 +75,24 @@
         //add event listener to submit button in form so that once User logs in, page redirects to HomePage.
         form.addEventListener("submit", (event) =>{
         event.preventDefault();
-
+        //create js variables from html email and password
         const email = document.getElementById("inputEmail").value;
         const password = document.getElementById("inputPassword").value;
-
+        //pring user entered email and password to console
         console.log(email," ", password)
 
-
+        //use firebase authentication to check if user exists
         signInWithEmailAndPassword(auth, email, password)
         .then((user) => {
             if (user) {
-            alert("Login Successful");
+            //if user exists, alert login successful and redirect to homepage
+            alert("Login Successful"); //alert if user details entered are correct
             window.location = "home.html";
             }
         })
         .catch((error) => {
         console.log("error", error);
-        alert("Email or Password is incorrect. Please try again");
+        alert("Email or Password is incorrect. Please try again"); //Alert if user entered details do not exist on firebase
         });
     })
       </script>
