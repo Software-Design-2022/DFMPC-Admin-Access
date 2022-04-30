@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    
+
     <script>
 
         //function to fetch user data from firebase
@@ -28,9 +28,9 @@
                 var contact = childSnapshot.val().user_ContactNo;
 
                 $("#first_name").append(first_name);
-                $("last_name").append(last_name);
-                $("email").append(email);
-                $("contact").append(contact);
+                $("#last_name").append(last_name);
+                $("#email").append(email);
+                $("#contact").append(contact);
 
                 });
             });
@@ -57,55 +57,145 @@
         </div>
     </div>
 </nav>
-<script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
-    import { getDatabase, ref, child, get} from   "https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-  
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-      apiKey: "AIzaSyAZVQZO8XWR0UTPoSMLrRN7nSltUDW9Xzs",
-      authDomain: "dfmpc-student-placement-system.firebaseapp.com",
-      databaseURL: "https://dfmpc-student-placement-system-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "dfmpc-student-placement-system",
-      storageBucket: "dfmpc-student-placement-system.appspot.com",
-      messagingSenderId: "295214875936",
-      appId: "1:295214875936:web:546dcdb4f822d1c4c84345",
-      measurementId: "G-1JPG0HXVWQ"
-    };
-  
-    // Initialize Firebase and variables
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const dbRef = ref(getDatabase());
-    get(child(dbRef, `users`)).then((snapshot) => {
-        if (snapshot.exists()) {
-            console.log(snapshot.val());
-        } 
-        else {
-            console.log("No data available");
-        }
-        }).catch((error) => {
-        console.error(error);
-        });
+<div>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <br>
+    <div class="container">
+        <div class="panel panel-default panel-table">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col cl-xs-6">
+                        <h4>USERS</h4>
+                    </div>
+                    <div class="col col-xs-6 text-right">
+                        <button class="btn btn-sm btn-primary btn-create" type="button">
+                            Add New User
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr align="center">
+                                        
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                        <th>Contact Number</th>
+                                        <th>
+                                            <em class="fa fa-cog"></em>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body">
+                                   
+                                </tbody>
+                            </table>
+                                                                       
+                            <script type="module">
+                                // Import the functions you need from the SDKs you need
+                                import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
+                                import { getDatabase, ref, child, get} from   "https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js";
+                                import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
+                                // TODO: Add SDKs for Firebase products that you want to use
+                                // https://firebase.google.com/docs/web/setup#available-libraries
+                              
+                                // Your web app's Firebase configuration
+                                // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
-    
-  </script>
-<script>
-    var sign_out = document.getElementById("out");
+                                //--------------------------CONFIGURATION----------------------------------------//
 
-    sign_out.addEventListener("click", function(){
-        document.location.href = "index.html";
-    });
+                                const firebaseConfig = {
+                                  apiKey: "AIzaSyAZVQZO8XWR0UTPoSMLrRN7nSltUDW9Xzs",
+                                  authDomain: "dfmpc-student-placement-system.firebaseapp.com",
+                                  databaseURL: "https://dfmpc-student-placement-system-default-rtdb.europe-west1.firebasedatabase.app",
+                                  projectId: "dfmpc-student-placement-system",
+                                  storageBucket: "dfmpc-student-placement-system.appspot.com",
+                                  messagingSenderId: "295214875936",
+                                  appId: "1:295214875936:web:546dcdb4f822d1c4c84345",
+                                  measurementId: "G-1JPG0HXVWQ"
+                                };
+                              
 
-    var home_element = document.getElementById("home");
+                                const app = initializeApp(firebaseConfig);
+                                function getData() {
+                                    firebaseConfig.da
+                                }
+                                const analytics = getAnalytics(app);
+                               
+                                
+                                //----------------------------END OF CONFIGURATION---------------------------------//
 
-    home_element.addEventListener("click", function(){
-        document.location.href = "home.html";
-    });
-</script>
+                                
+                                
+                                function add_users () {
+                                    const dbRef = ref(getDatabase());
+                                    get(child(dbRef, `users`)).then((snapshot) => {
+                                    snapshot.forEach(function(childSnapshot) {
+                                        var key = childSnapshot.key;
+                                        var childData = childSnapshot.val();              
+
+                                        var first_name = childSnapshot.val().user_FirstName;
+                                        var last_name = childSnapshot.val().user_LastName;
+                                        var email = childSnapshot.val().email;
+                                        var contact = childSnapshot.val().user_ContactNo;
+
+                                        
+                                        AddItemsToTable(first_name, last_name, email, contact);
+                                        });
+                                    });
+                                }
+
+                                window.onload = add_users(); //load the data when the page loads
+
+                                function AddItemsToTable(first_name, last_name, email, contact){ //add the data to the table
+                                    var table = document.getElementById("table_body"); //get the table
+                                    var row = document.createElement("tr"); //create a row
+                                    var cell1 = document.createElement("td"); //create a cell
+                                    var cell2 = document.createElement("td"); //create a cell
+                                    var cell3 = document.createElement("td"); //create a cell
+                                    var cell4 = document.createElement("td"); //create a cell
+                                    var cell5 = document.createElement("td"); //create a cell
+                                    
+                                    cell1.innerHTML = first_name;
+                                    cell2.innerHTML = last_name;
+                                    cell3.innerHTML = email;
+                                    cell4.innerHTML = contact;
+                                    cell5.innerHTML = "<button class='btn btn-sm btn-primary btn-create' type='button'>Edit</button><button class='btn btn-sm btn-danger btn-create' type='button'>Delete</button>";
+
+                                    row.appendChild(cell1);
+                                    row.appendChild(cell2);
+                                    row.appendChild(cell3);
+                                    row.appendChild(cell4);
+                                    row.appendChild(cell5);
+
+                                    table.appendChild(row);
+
+
+
+
+                                   
+                                }
+                              </script>
+                            <script>
+                                var sign_out = document.getElementById("out");
+                            
+                                sign_out.addEventListener("click", function(){
+                                    document.location.href = "index.html";
+                                });
+                            
+                                var home_element = document.getElementById("home");
+                            
+                                home_element.addEventListener("click", function(){
+                                    document.location.href = "home.html";
+                                });
+                            </script>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
