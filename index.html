@@ -30,7 +30,8 @@
                 </div>
             </div>
 
-            <input type="submit" class="btn btn-primary btn-block btn-lg btn-signin" value="Login" id="sign_in"/>
+            <!-- <input type="submit" class="btn btn-primary btn-block btn-lg btn-signin" value="Login" id="sign_in"/> -->
+            <button type="submit" class="btn btn-primary accordion-body btn-lg btn-signin" value="Login" id="sign_in">Sign in</button> 
         </form>
         <a href="#" class="forgot-password">
             Forgot your password?
@@ -78,7 +79,7 @@
         //create js variables from html email and password
         const email = document.getElementById("inputEmail").value;
         const password = document.getElementById("inputPassword").value;
-        //pring user entered email and password to console
+        //print user entered email and password to console
         console.log(email," ", password)
 
         //use firebase authentication to check if user exists
@@ -87,7 +88,7 @@
             if (user) {
             //if user exists, alert login successful and redirect to homepage
             alert("Login Successful"); //alert if user details entered are correct
-            window.location = "home.html";
+            window.location = "home.html"; //redirect to homepage
             }
         })
         .catch((error) => {
