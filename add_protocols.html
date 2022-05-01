@@ -1,24 +1,62 @@
-<html> 
-<head> 
-<title>Add New Protocol</title> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Add New Protocol</title>
+    <link rel="stylesheet" href="assets/css/Navigation-Dark-Clean.css">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/Google-Stylel-Login.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head> 
   
 <body> 
-<div class="main-form"> 
- <h1 id="punTimes">Add New Protocol</h1> 
-
- <form id = "form" class="form-signin">
-    Protocol Name: <input type="text" placeholder="Protocol Name: " id="Name"><br /><br /> 
-    Protocol Description: <input type="text" placeholder="Enter protocol description here..." id="Description"maxlength="100" size="100"> <br /><br /> 
+    <nav class="navbar navbar-dark navbar-expand-md bg-dark navigation-clean">
+        <div class="container">
+            <a class="navbar-brand" href="#">Student Placement System</a>
+            
+            
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navcol-1">
+                <span class="visually-hidden">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navcol-1" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav ms-auto">
+                    <!-- <li class="nav-item" role="presentation"><a class="nav-link active" href="home.html">Home</a></li> -->
+                    <!-- <li class="nav-item" role="presentation"><a class="nav-link active" href="index.html">Logout</a></li> -->
+                    <!-- <li class="nav-item" role="presentation"><a class="nav-link" href="login.html">Dashboards</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="register.html">Schedules</a></li> -->
+                </ul>
+                <button id = "return" class="btn btn-secondary" type="button" href="protocols.html">Protocols</button>
+                <button id = "home" class="btn btn-secondary" type="button" href="home.html">Home</button>
+                <button id = "out" class="btn btn-primary" type="button" href="index.html">Sign Out</button>
+            </div>
+        </div>
+    </nav>
+    <div>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <br>
+        <div class="container">
+            <div class="panel panel-default panel-table">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col col-xs-6">
+                            <h3 class="panel-title">Add New Protocol</h3>
+                        </div>
+    <form id = "form" class="form-signin">
+        Protocol Name: <input type="text" placeholder="Protocol Name: " id="Name"><br /><br /> 
+        Protocol Description: <input type="text" placeholder="Enter protocol description here..." id="Description"maxlength="50" size="50"> <br /><br /> 
   
-<br /><br /> 
- <button id="saveButton" >Submit</button> 
-</div> 
-</form>
+        
+        <button id="saveButton" href="#" class="btn btn-sm btn-success btn-create" >Submit</button> 
 
-<button id="return" >Protocols</button> 
+    </form>
 
-  
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
+
 <script type="module">
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
@@ -46,7 +84,7 @@
     const db = getFirestore();
     const submit = document.getElementById("saveButton");
     
-    
+    //add event listener to form that allows us to add protocols and descriptions to firebase
     form.addEventListener("submit", (event) =>{
         event.preventDefault();
 
@@ -54,15 +92,30 @@
         addProtocols();
      
          console.log("Doc successful");
-         
+         //toast message to tell user that protocol has been added
+         Swal.fire({
+            toast: true,
+            icon: 'success',
+            title: 'Protocol added successfully',
+            animation: false,
+            position: 'center',
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+         form.reset(); //clear form
+        });
 
-        
-    })
+        //function to add user input to firestore database
         async function addProtocols() {
 
             var inputName = document.getElementById("Name").value;
             var inputDescription = document.getElementById("Description").value;
-             setDoc(doc(db, "emergency_protocols", inputName), {
+            await setDoc(doc(db, "emergency_protocols", inputName), {
                 protocol_name: inputName,
                 protocol_1: inputDescription
                 });
@@ -73,6 +126,17 @@
   </script>
 
 <script>
+    var sign_out = document.getElementById("out");
+
+sign_out.addEventListener("click", function(){
+    document.location.href = "index.html";
+});
+
+var home_element = document.getElementById("home");
+
+home_element.addEventListener("click", function(){
+    document.location.href = "home.html";
+});
     var back = document.getElementById("return");
 
     back.addEventListener("click", function(){
