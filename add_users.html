@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Add New Protocol</title>
+    <link rel="stylesheet" href="assets/css/Navigation-Dark-Clean.css">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/Google-Stylel-Login.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head> 
+  
+<body> 
+    <nav class="navbar navbar-dark navbar-expand-md bg-dark navigation-clean">
+        <div class="container">
+            <a class="navbar-brand" href="#">Student Placement System</a>
+            
+            
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navcol-1">
+                <span class="visually-hidden">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navcol-1" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav ms-auto">
+                    <!-- <li class="nav-item" role="presentation"><a class="nav-link active" href="home.html">Home</a></li> -->
+                    <!-- <li class="nav-item" role="presentation"><a class="nav-link active" href="index.html">Logout</a></li> -->
+                    <!-- <li class="nav-item" role="presentation"><a class="nav-link" href="login.html">Dashboards</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="register.html">Schedules</a></li> -->
+                </ul>
+                <button id = "return" class="btn btn-secondary" type="button" href="users.html">Users</button>
+                <button id = "home" class="btn btn-secondary" type="button" href="home.html">Home</button>
+                <button id = "out" class="btn btn-primary" type="button" href="index.html">Sign Out</button>
+            </div>
+        </div>
+    </nav>
+    <div>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <br>
+        <div class="container">
+            <div class="panel panel-default panel-table">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col col-xs-6">
+                            <h3 class="panel-title">Add New User</h3>
+                        </div>
+    <form id = "form" class="form-signin">
+        <!-- Form attributes -->
+        First Name: <input type="text" placeholder="First Name: " id="first"><br /><br /> 
+        Last Name: <input type="text" placeholder="Last Name: " id="last"><br /><br />
+        Email: <input type="text" placeholder="Email: " id="email"><br /><br />
+        Password: <input type="text" placeholder="Password: " id="password"><br /><br />
+        Contact No: <input type="text" placeholder="Contact No: " id="contact"><br /><br /> 
+        Student No: <input type="text" placeholder="Contact No: " id="student"><br /><br /> 
+        ID: <input type="text" placeholder="ID: " id="user_id"><br /><br /> 
+        
+        <button id="saveButton" href="#" class="btn btn-sm btn-success btn-create" >Submit</button> 
+
+    </form>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
+    import { getDatabase, ref, child, push, update} from   "https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyAZVQZO8XWR0UTPoSMLrRN7nSltUDW9Xzs",
+      authDomain: "dfmpc-student-placement-system.firebaseapp.com",
+      databaseURL: "https://dfmpc-student-placement-system-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "dfmpc-student-placement-system",
+      storageBucket: "dfmpc-student-placement-system.appspot.com",
+      messagingSenderId: "295214875936",
+      appId: "1:295214875936:web:546dcdb4f822d1c4c84345",
+      measurementId: "G-1JPG0HXVWQ"
+    };
+  
+    // Initialize Firebase and variables
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getDatabase();
+      
+    //create date and time variables
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + today.getMilliseconds();
+    var dateTime = date+' '+time;
+    var newPostKey; // initialise variable to store firebase post key
+
+    //add event listener to form that allows us to add protocols and descriptions to firebase
+    form.addEventListener("submit", (event) =>{
+        event.preventDefault();
+        //get variables from input tables
+        var submit = document.getElementById("saveButton").value;
+        var first_name = document.getElementById("first").value;
+        var last_name = document.getElementById("last").value;
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+        var contact = document.getElementById("contact").value;
+        var student = document.getElementById("student").value;
+        var id = document.getElementById("user_id").value;
+        
+        
+        addUser(id, first_name, last_name, email, password, contact, student, dateTime); //call add users function
+        
+         console.log("User Added successfully");
+         //toast message to tell admin that new user has been added
+         Swal.fire({
+            toast: true,
+            icon: 'success',
+            title: 'User added successfully',
+            animation: false,
+            position: 'center',
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+         form.reset(); //clear form
+        });
+
+        //function to add user input to firestore database
+        function addUser(id, first_name, last_name, email, password, contact, student, dateTime) {
+            const db = getDatabase();
+
+            //create variable to store information from html form
+            var postData = {
+            created_at: dateTime,
+            email: email,
+            id: id,
+            password_digest: password,
+            updated_at: dateTime,
+            user_ContactNo: contact,
+            user_FirstName: first_name,
+            user_LastName: last_name,
+            user_Type: "Student", //all users being added are students
+            user_profile_photo : "https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" //set default profile picture
+        };
+            newPostKey = newPostKey = push(child(ref(db), 'users')).key; //create new post key to store the new student information
+            // console.log(newPostKey)
+            const updates = {};
+            updates['/users/' + newPostKey] = postData; //push student information to post key in firebase
+
+            return update(ref(db), updates); 
+}
+
+        
+  </script>
+
+<script>
+    var sign_out = document.getElementById("out");
+
+sign_out.addEventListener("click", function(){
+    document.location.href = "index.html";
+});
+
+var home_element = document.getElementById("home");
+
+home_element.addEventListener("click", function(){
+    document.location.href = "home.html";
+});
+    var back = document.getElementById("return");
+
+    back.addEventListener("click", function(){
+        document.location.href = "users.html";
+    });
+</script>
+  
+</body> 
+</html>
