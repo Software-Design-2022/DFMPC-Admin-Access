@@ -24,5 +24,5 @@ The website is easy to customize
 The website is scalable
 
 
-![Database Diagram1](https://user-images.githubusercontent.com/67168444/166154023-6e2a713c-d6ce-428b-9b23-8658548ddc79.png)
+![Database Diagram1](https://user-images.githubusercontent.com/67168444/166154133-3302cf58-27c5-4b1d-84d0-2a1786d8fac2.png)
 Above is a structure of the database. It includes relations between tables.
