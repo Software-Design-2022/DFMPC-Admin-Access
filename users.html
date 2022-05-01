@@ -26,11 +26,13 @@
                 var last_name = childSnapsot.val().user_LastName;
                 var email = childSnapshot.val().email;
                 var contact = childSnapshot.val().user_ContactNo;
+                var id = childSnapshot.val().id;
 
                 $("#first_name").append(first_name);
                 $("#last_name").append(last_name);
                 $("#email").append(email);
                 $("#contact").append(contact);
+                $("#id").append(id);
 
                 });
             });
@@ -68,7 +70,7 @@
                         <h4>USERS</h4>
                     </div>
                     <div class="col col-xs-6 text-right">
-                        <button class="btn btn-sm btn-primary btn-create" type="button">
+                        <button class="btn btn-sm btn-primary btn-create" type="button" id="add">
                             Add New User
                         </button>
                     </div>
@@ -82,6 +84,7 @@
                                         <th>Last Name</th>
                                         <th>Email</th>
                                         <th>Contact Number</th>
+                                        <th>ID</th>
                                         <th>
                                             <em class="fa fa-cog"></em>
                                         </th>
@@ -139,16 +142,17 @@
                                         var last_name = childSnapshot.val().user_LastName;
                                         var email = childSnapshot.val().email;
                                         var contact = childSnapshot.val().user_ContactNo;
+                                        var user_id = childSnapshot.val().id;
 
                                         
-                                        AddItemsToTable(first_name, last_name, email, contact);
+                                        AddItemsToTable(first_name, last_name, email, contact, user_id);
                                         });
                                     });
                                 }
 
                                 window.onload = add_users(); //load the data when the page loads
 
-                                function AddItemsToTable(first_name, last_name, email, contact){ //add the data to the table
+                                function AddItemsToTable(first_name, last_name, email, contact, user_id){ //add the data to the table
                                     var table = document.getElementById("table_body"); //get the table
                                     var row = document.createElement("tr"); //create a row
                                     var cell1 = document.createElement("td"); //create a cell
@@ -156,18 +160,21 @@
                                     var cell3 = document.createElement("td"); //create a cell
                                     var cell4 = document.createElement("td"); //create a cell
                                     var cell5 = document.createElement("td"); //create a cell
+                                    var cell6 = document.createElement("td"); //create a cell
                                     
                                     cell1.innerHTML = first_name;
                                     cell2.innerHTML = last_name;
                                     cell3.innerHTML = email;
                                     cell4.innerHTML = contact;
-                                    cell5.innerHTML = "<button class='btn btn-sm btn-primary btn-create' type='button'>Edit</button><button class='btn btn-sm btn-danger btn-create' type='button'>Delete</button>";
+                                    cell5.innerHTML = user_id;
+                                    cell6.innerHTML = "<button class='btn btn-sm btn-primary btn-create' type='button'>Edit</button><button class='btn btn-sm btn-danger btn-create' type='button'>Delete</button>";
 
                                     row.appendChild(cell1);
                                     row.appendChild(cell2);
                                     row.appendChild(cell3);
                                     row.appendChild(cell4);
                                     row.appendChild(cell5);
+                                    row.appendChild(cell6)
 
                                     table.appendChild(row);
 
@@ -188,6 +195,11 @@
                             
                                 home_element.addEventListener("click", function(){
                                     document.location.href = "home.html";
+                                });
+                                var add = document.getElementById("add");
+
+                                add.addEventListener("click", function(){
+                                    document.location.href = "add_users.html";
                                 });
                             </script>
                             
