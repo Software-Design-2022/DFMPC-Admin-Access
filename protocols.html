@@ -43,7 +43,7 @@
                         <h3 class="panel-title">Protocols</h3>
                     </div>
                     <div class="col col-xs-6 text-right">
-                        <a href="#" class="btn btn-sm btn-primary btn-create">Add New Protocol</a>
+                        <a id="add_new" href="#" class="btn btn-sm btn-primary btn-create">Add New Protocol</a>
                     </div>
 
                     <div class="card-body"> 
@@ -147,6 +147,12 @@
 
     home_element.addEventListener("click", function(){
         document.location.href = "home.html";
+    });
+
+    var add = document.getElementById("add_new");
+
+    add.addEventListener("click", function(){
+        document.location.href = "add_protocols.html";
     });
 </script>
 </body>

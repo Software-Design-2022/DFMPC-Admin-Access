@@ -37,6 +37,7 @@
             Forgot your password?
         </a>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
@@ -86,14 +87,26 @@
         signInWithEmailAndPassword(auth, email, password)
         .then((user) => {
             if (user) {
-            //if user exists, alert login successful and redirect to homepage
-            alert("Login Successful"); //alert if user details entered are correct
-            window.location = "home.html"; //redirect to homepage
+            //if user exists, the login is successful, redirect to homepage
+            window.location = "home.html";
             }
         })
         .catch((error) => {
         console.log("error", error);
-        alert("Email or Password is incorrect. Please try again"); //Alert if user entered details do not exist on firebase
+        Swal.fire({
+            toast: true,
+            icon: 'error',
+            title: 'Login Failed. Check your email or password.',
+            animation: false,
+            position: 'top-right',
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        }) //Alert if user entered details are incorrect
         });
     })
       </script>
