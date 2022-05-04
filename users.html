@@ -72,24 +72,7 @@
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
-            <div class="modal-body">
-                <label class="labs">First Name: </label>
-                <input type="text" id="first"></input> <br>
-                <label class="labs">Last Name: </label>
-                <input type="text" id="last"></input> <br>
-                <label class="labs">Email: </label>
-                <input type="text" id="email"></input> <br>
-                <label class="labs">Contact No: </label>
-                <input type="text" id="contact"></input> <br>
-                <label class="labs">ID: </label>
-                <input type="text" id="id"></input> <br>
-            </div>
-            <div class="modal-footer">
-            <button type ="button" id = "add" class="btn btn-primary">Add New Record</button>
-            <button type ="button" id="update" class="btn btn-success" onclick="Update()">Update Record</button>
-            <button type ="button" id="delete" class="btn btn-danger" onclick="Delete()">Delete Record</button>
             
-            </div>
         </div>
         </div>
     </div>
@@ -116,7 +99,7 @@
                                         <th>Email</th>
                                         <th>Contact Number</th>
                                         <th>ID</th>
-                                        <th>Control Center</th>
+                                        <th>
                                         
                                             <em class="fa fa-cog"></em>
                                         </th>
@@ -201,18 +184,14 @@
                                     var cell3 = document.createElement("td"); //create a cell
                                     var cell4 = document.createElement("td"); //create a cell
                                     var cell5 = document.createElement("td"); //create a cell
-                                    // var cell6 = document.createElement("td"); //create a cell
-                                    userList.push(first_name, last_name, email, contact, user_id)
-                                    var control = document.createElement("div");
-                                    control.innerHTML = '<button type="button" id ="edit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Edit</button>';
-                                    
-                                    
+                                    var cell6 = document.createElement("td"); //create a cell
+
                                     cell1.innerHTML = first_name;
                                     cell2.innerHTML = last_name;
                                     cell3.innerHTML = email;
                                     cell4.innerHTML = contact;
                                     cell5.innerHTML = user_id;
-                                    // cell6.innerHTML = "<button class='btn btn-sm btn-primary btn-create' type='button'>Edit</button><button class='btn btn-sm btn-danger btn-create' type='button'>Delete</button>";
+                                    cell6.innerHTML = "<button class='btn btn-sm btn-primary btn-create' type='button'>Edit</button><button class='btn btn-sm btn-danger btn-create' type='button'>Delete</button>";
 
                                     row.appendChild(cell1);
                                     row.appendChild(cell2);
@@ -223,30 +202,7 @@
                                     
 
                                     table.appendChild(row);
-                                    control.addEventListener("click", function()
-                                    {
-                                        
-                                        var firstMod = document.getElementById('first');
-                                        var lastMod = document.getElementById('last');
-                                        var emailMod = document.getElementById('email');
-                                        var contactMod = document.getElementById('contact');
-                                        var idMod = document.getElementById('id');
-
-                                        var updateMod = document.getElementById('update');
-                                        var deleteMod = document.getElementById('delete');
-                                        var index = user_id;
-                                        var size = userList.length;
-                                        for (let i = 0; i < size; i+5)
-                                        {
-                                            firstMod.value = userList[i];
-                                            lastMod.value = userList[1 + i];
-                                            emailMod.value = userList[2 + i];
-                                            contactMod.value = userList[3 + i];
-                                            idMod.value = userList[4 + i];
-                                        }
-                                        console.log(userList);
-                                    });
-                                    // https://www.youtube.com/watch?v=JcVAb7Uqne0
+                                    
                                    
                                 }
                                 
