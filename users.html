@@ -126,11 +126,21 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                    ...
+                                        <label class="labs">First Name: </label>
+                                        <input type="text" id="first"></input> <br>
+                                        <label class="labs">Last Name: </label>
+                                        <input type="text" id="last"></input> <br>
+                                        <label class="labs">Email: </label>
+                                        <input type="text" id="email"></input> <br>
+                                        <label class="labs">Contact No: </label>
+                                        <input type="text" id="contact"></input> <br>
+                                        <label class="labs">ID: </label>
+                                        <input type="text" id="id"></input> <br>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" id="update" class="btn btn-success">Update User</button>
+                                    <button type="button" id="remove" class="btn btn-danger">Delete User</button>
                                     </div>
                                 </div>
                                 </div>
@@ -140,7 +150,7 @@
                             <script type="module">
                                 // Import the functions you need from the SDKs you need
                                 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
-                                import { getDatabase, ref, child, get} from   "https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js";
+                                import { getDatabase, ref, child, get, remove, onValue, update} from   "https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js";
                                 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
                                 // TODO: Add SDKs for Firebase products that you want to use
                                 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -168,19 +178,30 @@
                                 }
                                 const analytics = getAnalytics(app);
 
-                                import{
-                                    getFirestore, doc, getDoc, setDoc, collection, addDoc, updateDoc, deleteDoc, deleteField
-                                }
-                                from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
+                                
                                
-                                const db = getFirestore();
+                                const db = getDatabase(); //realtime
 
                                 
                                 
                                 //----------------------------END OF CONFIGURATION---------------------------------//
 
                                 
-                                var userList = [];
+                                var postKey;//this key is used to find each childnode in users
+                                //the following variables are unseen attributes in user table
+                                var created_at;
+                                var password_digest;
+                                var user_Type;
+                                var user_profile_photo;
+
+                                //create Modal Form variables
+                                var firstMod = document.getElementById('first');
+                                var lastMod = document.getElementById('last');
+                                var emailMod = document.getElementById('email');
+                                var contactMod = document.getElementById('contact');
+                                var idMod = document.getElementById('id');
+
+                                //function to fetch user information from firebase
                                 function add_users () {
                                     const dbRef = ref(getDatabase());
                                     get(child(dbRef, `users`)).then((snapshot) => {
@@ -193,21 +214,22 @@
                                         var email = childSnapshot.val().email;
                                         var contact = childSnapshot.val().user_ContactNo;
                                         var user_id = childSnapshot.val().id;
+                                        //the following variables will be used if we need to edit a user's information
+                                        postKey = user_id - 1;
+                                        created_at = childSnapshot.val().created_at;
+                                        password_digest = childSnapshot.val().password_digest;
+                                        user_Type = childSnapshot.val().user_Type;
+                                        user_profile_photo = childSnapshot.val().user_profile_photo;
 
-                                        
-                                        
-                                        
-                                        
+                                        //we only wwant to view the following items in the table
                                         AddItemsToTable(first_name, last_name, email, contact, user_id);
                                         });
                                     });
                                 }
-                                
-                                
 
                                 window.onload = add_users(); //load the data when the page loads
                                 
-                                
+                                //function to add items to each row in table
                                 function AddItemsToTable(first_name, last_name, email, contact, user_id){ //add the data to the table
                                     var table = document.getElementById("table_body"); //get the table
                                     var row = document.createElement("tr"); //create a row
@@ -224,7 +246,7 @@
                                     cell4.innerHTML = contact;
                                     cell5.innerHTML = user_id;
                                     
-                                    cell6.innerHTML = "<button class='btn btn-sm btn-primary m-2' data-bs-toggle='modal' data-bs-target='#myModal' type='button'>Edit</button><button class='btn btn-sm btn-danger btn-create' data-toggle='modal' type='button'>Delete</button>";
+                                    cell6.innerHTML = "<button class='btn btn-sm btn-primary m-2' data-bs-toggle='modal' data-bs-target='#myModal' type='button'>Edit</button>";
 
                                     row.appendChild(cell1);
                                     row.appendChild(cell2);
@@ -233,17 +255,71 @@
                                     row.appendChild(cell5);
                                     row.appendChild(cell6);
                                     
-
-
                                     
                                     table.appendChild(row);
+                                    //cell6 event listener ensures that when we click on edit, fields are already filled in with user info
+                                    //This allows us to chooose exactly what to edit.
+                                    cell6.addEventListener("click", function()
+                                    {
+                                        console.log(user_id); //confirm that we are looking at the right user's information
+                                        // display user information for each existing user on modal form so we see what changes are being made
+                                        firstMod.value = first_name;
+                                        lastMod.value = last_name;
+                                        emailMod.value = email;
+                                        contactMod.value = contact;
+                                        idMod.value = user_id;
 
+                                    });
                                 }
-
                                 
+                                // code for Modal form update button.
+                                var updateBtn = document.getElementById("update");
+                                updateBtn.addEventListener("click", function()
+                                {
+                                    //setting dateTime for updated_at attribute in users table
+                                    var today = new Date();
+                                    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                                    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + today.getMilliseconds();
+                                    var dateTime = date+' '+time;
+                                    
+                                    //update using postKey value
+                                    update(ref(db, "users/" + postKey),{
+                                        created_at: created_at,
+                                        email: emailMod.value,
+                                        id: idMod.value,
+                                        password_digest: password_digest,
+                                        updated_at: dateTime,
+                                        user_ContactNo: contactMod.value,
+                                        user_FirstName: firstMod.value,
+                                        user_LastName: lastMod.value,
+                                        user_Type: user_Type, 
+                                        user_profile_photo : user_profile_photo
+                                    })
+                                    .then(() =>{
+                                        alert("User Updated Succefully");
+                                        window.location.reload(true); //reload window after closing alert
+                                    })
+                                    .catch((error)=>{
+                                        alert("Unsuccesful. Please Try Again." + error)
+                                    });
+                                    
+                                });
 
-
+                                // code for Modal Form delete button
+                                var del = document.getElementById('remove');
+                                del.addEventListener("click", function()
+                                {
+                                    remove(ref(db, `users/` + postKey)) //remove an individual user in users table using postKey
+                                    .then(() =>{
+                                        alert("User removed Succefully");
+                                       window.location.reload(true); //reload window after closing alert
+                                    })
+                                    .catch((error)=>{
+                                        alert("Unsuccesful. Please Try Again." + error)
+                                    });
+                                });
                               </script>
+
                             <script>
                                 var sign_out = document.getElementById("out");
                             

@@ -68,7 +68,7 @@
                                 // Import the functions you need from the SDKs you need
                                 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
                                 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
-                                import {getFirestore, collection, doc, getDocs} from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
+                                import {getFirestore, collection, doc, getDocs, deleteDoc} from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
                                 // TODO: Add SDKs for Firebase products that you want to use
                                 // https://firebase.google.com/docs/web/setup#available-libraries
                               
@@ -106,6 +106,19 @@
                                 
                                 window.onload = add_users();
 
+                                async function deleteProtocol(protocol_name)
+                                {
+                                    await deleteDoc(doc(db, "emergency_protocols", protocol_name))
+                                    .then(() =>{
+                                        alert("Protocol Deleted Succefully");
+                                        window.location.reload(true); //reload window after closing alert
+                                    })
+                                    .catch((error)=>{
+                                        alert("Unsuccesful. Please Try Again." + error)
+                                    });
+                                    window.location.reload(true);
+                                }
+
                                 function AddProtocolToTable( protocol_name, protocol_description){
                                     var table = document.getElementById("protocol_body");
                                     var row = document.createElement("tr");
@@ -114,10 +127,15 @@
                                     var cell3 = document.createElement("td");
                                     
 
-                                    cell1.innerHTML = "<a class='btn btn-default' href='#'><em class='fa fa-pencil'></em></a>";
+                                    cell1.innerHTML = "<a class='btn btn-default' href='#'><em class='fa fa-trash'></em></a>";
                                     
                                     cell2.innerHTML = protocol_name;
                                     cell3.innerHTML = protocol_description;
+                                    
+
+                                    cell1.addEventListener("click", function(){
+                                        deleteProtocol(protocol_name);
+                                    })
 
                                     row.appendChild(cell1);
                                     row.appendChild(cell2);
