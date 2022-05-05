@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Add New Protocol</title>
     <link rel="stylesheet" href="assets/css/Navigation-Dark-Clean.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/Google-Stylel-Login.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head> 
@@ -51,7 +51,7 @@
         Email: <input type="text" placeholder="Email: " id="email"><br /><br />
         Password: <input type="text" placeholder="Password: " id="password"><br /><br />
         Contact No: <input type="text" placeholder="Contact No: " id="contact"><br /><br /> 
-        Student No: <input type="text" placeholder="Contact No: " id="student"><br /><br /> 
+        <!-- Student No: <input type="text" placeholder="Contact No: " id="student"><br /><br />  -->
         ID: <input type="text" placeholder="ID: " id="user_id"><br /><br /> 
         
         <button id="saveButton" href="#" class="btn btn-sm btn-success btn-create" >Submit</button> 
@@ -105,11 +105,10 @@
         var email = document.getElementById("email").value;
         var password = document.getElementById("password").value;
         var contact = document.getElementById("contact").value;
-        var student = document.getElementById("student").value;
         var id = document.getElementById("user_id").value;
         
         
-        addUser(id, first_name, last_name, email, password, contact, student, dateTime); //call add users function
+        addUser(id, first_name, last_name, email, password, contact, dateTime); //call add users function
         
          console.log("User Added successfully");
          //toast message to tell admin that new user has been added
@@ -131,7 +130,7 @@
         });
 
         //function to add user input to firestore database
-        function addUser(id, first_name, last_name, email, password, contact, student, dateTime) {
+        function addUser(id, first_name, last_name, email, password, contact, dateTime) {
             const db = getDatabase();
 
             //create variable to store information from html form
@@ -147,7 +146,8 @@
             user_Type: "Student", //all users being added are students
             user_profile_photo : "https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" //set default profile picture
         };
-            newPostKey = newPostKey = push(child(ref(db), 'users')).key; //create new post key to store the new student information
+            // newPostKey = push(child(ref(db), 'users')).key; 
+            newPostKey= id - 1;//create new post key to store the new student information
             // console.log(newPostKey)
             const updates = {};
             updates['/users/' + newPostKey] = postData; //push student information to post key in firebase
