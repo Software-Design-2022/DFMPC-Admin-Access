@@ -281,6 +281,16 @@
                                         alert("Unsuccesful. Please Try Again." + error)
                                     });
                                     window.location.reload(true);
+
+                                    await deleteDoc(doc(db, "students", postKey.toString()))
+                                    .then(() =>{
+                                        alert("User Deleted Succefully");
+                                        window.location.reload(true); //reload window after closing alert
+                                    })
+                                    .catch((error)=>{
+                                        alert("Unsuccesful. Please Try Again." + error)
+                                    });
+                                    window.location.reload(true);
                                 }
 
                                 // code for Modal Form delete button

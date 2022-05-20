@@ -56,12 +56,26 @@
         <button id = "students" class="users" type="button" href="students.html">
             <span class="button__text">Students</span>
             <span class="button__icon">
-                <ion-icon name="person-outline"></ion-icon>
+                <ion-icon name="school-outline"></ion-icon>
+            </span>
+        </button>       
+    </div>
+    <div class="container bg-light">
+        <button id = "groups" class="users" type="button" href="students.html">
+            <span class="button__text">Groups</span>
+            <span class="button__icon">
+                <ion-icon name="people-outline"></ion-icon>
+
+            </span>
+        </button>       
+        <button id = "specialties" class="users" type="button" href="events.html">
+            <span class="button__text">Specialties</span>
+            <span class="button__icon">
+                <ion-icon name="medical-outline"></ion-icon>
             </span>
         </button>
-
-       
     </div>
+
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
@@ -123,6 +137,19 @@
 
         students.addEventListener("click", function(){
             document.location.href = "students.html";
+            
+        })
+        var specialties = document.getElementById("specialties");
+
+        specialties.addEventListener("click", function(){
+            document.location.href = "specialties.html";
+            
+        })
+
+        var groups = document.getElementById("groups");
+
+        groups.addEventListener("click", function(){
+            document.location.href = "groups.html";
             
         })
     </script>
