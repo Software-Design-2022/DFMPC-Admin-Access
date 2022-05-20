@@ -50,8 +50,8 @@
         Email: <input type="text" placeholder="Email: " id="email"><br /><br />
         Password: <input type="text" placeholder="Password: " id="password"><br /><br />
         Contact No: <input type="text" placeholder="Contact No: " id="contact"><br /><br /> 
-        <!-- Student No: <input type="text" placeholder="Contact No: " id="student"><br /><br />  -->
-        ID: <input type="text" placeholder="ID: " id="user_id"><br /><br /> 
+        Student No: <input type="text" placeholder="Contact No: " id="student"><br /><br /> 
+        <!-- ID: <input type="text" placeholder="ID: " id="user_id"><br /><br />  -->
         
         <button id="saveButton" href="#" class="btn btn-sm btn-success btn-create" >Submit</button> 
 
@@ -65,7 +65,7 @@
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
-    import { getDatabase, ref, child, push, update} from   "https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js";
+    import { collection,getFirestore, doc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
   
@@ -85,31 +85,46 @@
     // Initialize Firebase and variables
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
-    const db = getDatabase();
+    const db = getFirestore();
       
     //create date and time variables
     var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + today.getMilliseconds();
     var dateTime = date+' '+time;
-    var newPostKey; // initialise variable to store firebase post key
-
+    var newPostKey; // initialise variable to store firestore doc name
+    var id; //initialise variable to store user id
     //add event listener to form that allows us to add protocols and descriptions to firebase
+    
+    //code to get the last key in the database, this allows us to increment the post key and id.
+    var keys = [];
+    const querySnapshot = await getDocs(collection(db, "users"));
+    querySnapshot.forEach((doc) => {
+
+        var user_id = doc.data().id;
+        var key = user_id - 1;
+        keys.push(key);
+        
+    });
+    //get value of last postKey which will the value of last id-1
+    var lastKey = keys[keys.length - 1];
+    
+    //set new Post Key and id
+    newPostKey = lastKey + 1;
+    console.log(newPostKey);
+    var PostKey = newPostKey.toString() //convert to string to allow function to work
+    id = newPostKey + 1;
+    console.log(id);
+    console.log(typeof PostKey);
+    console.log(PostKey)
+
     form.addEventListener("submit", (event) =>{
         event.preventDefault();
-        //get variables from input tables
-        var submit = document.getElementById("saveButton").value;
-        var first_name = document.getElementById("first").value;
-        var last_name = document.getElementById("last").value;
-        var email = document.getElementById("email").value;
-        var password = document.getElementById("password").value;
-        var contact = document.getElementById("contact").value;
-        var id = document.getElementById("user_id").value;
         
+        addUser(); //call add users function
+        addStudent(); // call add student function
         
-        addUser(id, first_name, last_name, email, password, contact, dateTime); //call add users function
-        
-         console.log("User Added successfully");
+        console.log("User Added successfully");
          //toast message to tell admin that new user has been added
          Swal.fire({
             toast: true,
@@ -127,34 +142,47 @@
         })
          form.reset(); //clear form
         });
-
-        //function to add user input to firestore database
-        function addUser(id, first_name, last_name, email, password, contact, dateTime) {
-            const db = getDatabase();
-
-            //create variable to store information from html form
-            var postData = {
-            created_at: dateTime,
-            email: email,
-            id: id,
-            password_digest: password,
-            updated_at: dateTime,
-            user_ContactNo: contact,
-            user_FirstName: first_name,
-            user_LastName: last_name,
-            user_Type: "Student", //all users being added are students
-            user_profile_photo : "https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" //set default profile picture
-        };
-            // newPostKey = push(child(ref(db), 'users')).key; 
-            newPostKey= id - 1;//create new post key to store the new student information
-            // console.log(newPostKey)
-            const updates = {};
-            updates['/users/' + newPostKey] = postData; //push student information to post key in firebase
-
-            return update(ref(db), updates); 
-}
-
         
+        //function to add user input to firestore database
+        async function addUser()
+        {
+            //function that add user to user collection
+            var submit = document.getElementById("saveButton").value;
+            var first_name = document.getElementById("first").value;
+            var last_name = document.getElementById("last").value;
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+            var contact = document.getElementById("contact").value;
+            await setDoc(doc(db, "users", PostKey), {
+                created_at: dateTime,
+                email: email,
+                id: id,
+                password_digest: password,
+                updated_at: dateTime,
+                user_ContactNo: contact,
+                user_FirstName: first_name,
+                user_LastName: last_name,
+                user_Type: "Student", //all users being added are students
+                user_profile_photo : "https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" //set default profile picture
+        });
+        }
+
+        async function addStudent()
+        {
+            //function that adds student to student collection
+            var student = document.getElementById("student").value;
+            await setDoc(doc(db, "students", PostKey), {
+                courseCodes: "",
+                created_at: dateTime,
+                id: id,
+                user_id: id,
+                programme_id: 1,
+                updated_at: dateTime,
+                studentNumber: student
+        });
+        }
+        
+
   </script>
 
 <script>

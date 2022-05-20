@@ -94,7 +94,6 @@
                                     const querySnapshot = await getDocs(collection(db, "emergency_protocols")); //get all the data from the collection
                                     querySnapshot.forEach((doc) => { //loop through the data
 
-                                        
                                         var protocol_name = doc.data().protocol_name; //protocol name
                                         var protocol_description = doc.data().protocol_1; //protocol_description
                                         

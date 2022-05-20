@@ -9,6 +9,8 @@
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^5.1.3",
-    "firebase": "^9.6.10"
+    "firebase": "^9.6.10",
+    "fullcalendar": "^5.11.0",
+    "fullcalendar-scheduler": "^5.11.0"
   }
 }
