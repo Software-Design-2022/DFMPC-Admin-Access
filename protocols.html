@@ -97,8 +97,7 @@
                                         
                                         var protocol_name = doc.data().protocol_name;
                                         var protocol_description = doc.data().protocol_1;
-                                        
-                                        AddProtocolToTable(protocol_name, protocol_description);
+                                        AddProtocolToTable(protocol_name, protocol_description.split("~").join("<br>")); //add data to table, protocols are separated by ~, and each protocol is separated by <br>
                                     });
 
                                 }
