@@ -198,6 +198,10 @@
   display: inline-block;
   text-align: center;
 }
+#calendar {
+  max-width: 560px;
+  margin: 0 auto;
+}
 
 
   
