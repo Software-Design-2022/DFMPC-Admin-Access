@@ -11,32 +11,6 @@
 </head>
 <body>
 
-    <!-- <script>
-
-        //function to fetch user data from firebase
-        function add_users () {
-            var userDataRef = firebase.database().ref("users").orderByKey();
-            userDataRef.once("value").then(function(snapshot) {
-            snapshot.forEach(function(childSnapshot) {
-                var key = childSnapshot.key;
-                var childData = childSnapshot.val();              
-
-                var first_name = childSnapshot.val().user_FirstName;
-                var last_name = childSnapsot.val().user_LastName;
-                var email = childSnapshot.val().email;
-                var contact = childSnapshot.val().user_ContactNo;
-                var id = childSnapshot.val().id;
-
-                $("#first_name").append(first_name);
-                $("#last_name").append(last_name);
-                $("#email").append(email);
-                $("#contact").append(contact);
-                $("#id").append(id);
-
-                });
-            });
-        }
-    </script> -->
 <nav class="navbar navbar-dark navbar-expand-md bg-dark navigation-clean">
     <div class="container">
         <a class="navbar-brand" href="#">Student Placement System</a>
@@ -48,10 +22,6 @@
         </button>
         <div id="navcol-1" class="collapse navbar-collapse">
             <ul class="nav navbar-nav ms-auto">
-                <!-- <li class="nav-item" role="presentation"><a class="nav-link active" href="home.html">Home</a></li> -->
-                <!-- <li class="nav-item" role="presentation"><a class="nav-link active" href="index.html">Logout</a></li> -->
-                <!-- <li class="nav-item" role="presentation"><a class="nav-link" href="login.html">Dashboards</a></li>
-                <li class="nav-item" role="presentation"><a class="nav-link" href="register.html">Schedules</a></li> -->
             </ul>
             <button id = "home" class="btn btn-secondary" type="button" href="home.html">Home</button>
             <button id = "out" class="btn btn-primary" type="button" href="index.html">Sign Out</button>
@@ -133,8 +103,6 @@
                                         <input type="text" id="email"></input> <br>
                                         <label class="labs">Contact No: </label>
                                         <input type="text" id="contact"></input> <br>
-                                        <label class="labs">ID: </label>
-                                        <input type="text" id="id"></input> <br>
                                     </div>
                                     <div class="modal-footer">
                                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
@@ -150,6 +118,7 @@
                                 // Import the functions you need from the SDKs you need
                                 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
                                 import { getDatabase, ref, child, get, remove, onValue, update} from   "https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js";
+                                import { collection,getFirestore, doc, getDocs, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
                                 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
                                 // TODO: Add SDKs for Firebase products that you want to use
                                 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -179,7 +148,7 @@
 
                                 
                                
-                                const db = getDatabase(); //realtime
+                                const db = getFirestore(); //realtime
 
                                 
                                 
@@ -192,37 +161,34 @@
                                 var password_digest;
                                 var user_Type;
                                 var user_profile_photo;
+                                var user_id;
 
                                 //create Modal Form variables
                                 var firstMod = document.getElementById('first');
                                 var lastMod = document.getElementById('last');
                                 var emailMod = document.getElementById('email');
                                 var contactMod = document.getElementById('contact');
-                                var idMod = document.getElementById('id');
+                                
 
-                                //function to fetch user information from firebase
-                                function add_users () {
-                                    const dbRef = ref(getDatabase());
-                                    get(child(dbRef, `users`)).then((snapshot) => {
-                                    snapshot.forEach(function(childSnapshot) {
-                                        var key = childSnapshot.key;
-                                        var childData = childSnapshot.val();              
+                                //function to fetch user information from firestore database and display in table
+                                async function add_users () {
+                                    
+                                    const querySnapshot = await getDocs(collection(db, "users"));
+                                    querySnapshot.forEach((doc) => {
 
-                                        var first_name = childSnapshot.val().user_FirstName;
-                                        var last_name = childSnapshot.val().user_LastName;
-                                        var email = childSnapshot.val().email;
-                                        var contact = childSnapshot.val().user_ContactNo;
-                                        var user_id = childSnapshot.val().id;
-                                        //the following variables will be used if we need to edit a user's information
+                                        var first_name = doc.data().user_FirstName;
+                                        var last_name = doc.data().user_LastName;
+                                        var email = doc.data().email;
+                                        var contact = doc.data().user_ContactNo;
+                                        user_id = doc.data().id;
                                         postKey = user_id - 1;
-                                        created_at = childSnapshot.val().created_at;
-                                        password_digest = childSnapshot.val().password_digest;
-                                        user_Type = childSnapshot.val().user_Type;
-                                        user_profile_photo = childSnapshot.val().user_profile_photo;
-
-                                        //we only wwant to view the following items in the table
+                                        created_at = doc.data().created_at;
+                                        password_digest = doc.data().password_digest;
+                                        user_Type = doc.data().user_Type;
+                                        user_profile_photo = doc.data().user_profile_photo;
+                                        
+                                        
                                         AddItemsToTable(first_name, last_name, email, contact, user_id);
-                                        });
                                     });
                                 }
 
@@ -266,26 +232,27 @@
                                         lastMod.value = last_name;
                                         emailMod.value = email;
                                         contactMod.value = contact;
-                                        idMod.value = user_id;
+                                        // idMod.value = user_id;
 
                                     });
                                 }
                                 
                                 // code for Modal form update button.
                                 var updateBtn = document.getElementById("update");
-                                updateBtn.addEventListener("click", function()
+                                // async function updateUser()
+                                updateBtn.addEventListener("click", async function()
                                 {
+                                    console.log(postKey)
                                     //setting dateTime for updated_at attribute in users table
                                     var today = new Date();
                                     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
                                     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + today.getMilliseconds();
                                     var dateTime = date+' '+time;
-                                    
-                                    //update using postKey value
-                                    update(ref(db, "users/" + postKey),{
+
+                                    await setDoc(doc(db, "users", postKey.toString()), {
                                         created_at: created_at,
                                         email: emailMod.value,
-                                        id: idMod.value,
+                                        id: user_id,
                                         password_digest: password_digest,
                                         updated_at: dateTime,
                                         user_ContactNo: contactMod.value,
@@ -293,7 +260,7 @@
                                         user_LastName: lastMod.value,
                                         user_Type: user_Type, 
                                         user_profile_photo : user_profile_photo
-                                    })
+                                })
                                     .then(() =>{
                                         alert("User Updated Succefully");
                                         window.location.reload(true); //reload window after closing alert
@@ -303,19 +270,34 @@
                                     });
                                     
                                 });
+                                async function deleteUser(postKey)
+                                {
+                                    await deleteDoc(doc(db, "users", postKey.toString()))
+                                    .then(() =>{
+                                        alert("User Deleted Succefully");
+                                        window.location.reload(true); //reload window after closing alert
+                                    })
+                                    .catch((error)=>{
+                                        alert("Unsuccesful. Please Try Again." + error)
+                                    });
+                                    window.location.reload(true);
+
+                                    await deleteDoc(doc(db, "students", postKey.toString()))
+                                    .then(() =>{
+                                        alert("User Deleted Succefully");
+                                        window.location.reload(true); //reload window after closing alert
+                                    })
+                                    .catch((error)=>{
+                                        alert("Unsuccesful. Please Try Again." + error)
+                                    });
+                                    window.location.reload(true);
+                                }
 
                                 // code for Modal Form delete button
                                 var del = document.getElementById('remove');
                                 del.addEventListener("click", function()
                                 {
-                                    remove(ref(db, `users/` + postKey)) //remove an individual user in users table using postKey
-                                    .then(() =>{
-                                        alert("User removed Succefully");
-                                       window.location.reload(true); //reload window after closing alert
-                                    })
-                                    .catch((error)=>{
-                                        alert("Unsuccesful. Please Try Again." + error)
-                                    });
+                                    deleteUser(postKey);
                                 });
                               </script>
 

@@ -91,48 +91,47 @@
                                 
                                 //function to fetch data from firestore database. 
                                 async function add_users(){
-                                    const querySnapshot = await getDocs(collection(db, "emergency_protocols"));
-                                    querySnapshot.forEach((doc) => {
+                                    const querySnapshot = await getDocs(collection(db, "emergency_protocols")); //get all the data from the collection
+                                    querySnapshot.forEach((doc) => { //loop through the data
 
+                                        var protocol_name = doc.data().protocol_name; //protocol name
+                                        var protocol_description = doc.data().protocol_1; //protocol_description
                                         
-                                        var protocol_name = doc.data().protocol_name;
-                                        var protocol_description = doc.data().protocol_1;
-                                        
-                                        AddProtocolToTable(protocol_name, protocol_description.split("~").join("\n"));
+                                        AddProtocolToTable(protocol_name, protocol_description.split("~").join("<br>")); //add data to table, protocols are separated by ~, and each protocol is separated by <br>
                                     });
 
                                 }
                                 
-                                window.onload = add_users();
+                                window.onload = add_users(); //call the function when the page is loaded
 
-                                async function deleteProtocol(protocol_name)
+                                async function deleteProtocol(protocol_name)  //function to delete a protocol
                                 {
                                     await deleteDoc(doc(db, "emergency_protocols", protocol_name))
                                     .then(() =>{
-                                        alert("Protocol Deleted Succefully");
+                                        alert("Protocol Deleted Succefully"); //alert the user that the protocol was deleted successfully
                                         window.location.reload(true); //reload window after closing alert
                                     })
                                     .catch((error)=>{
-                                        alert("Unsuccesful. Please Try Again." + error)
+                                        alert("Unsuccesful. Please Try Again." + error) //alert if unsuccessful
                                     });
-                                    window.location.reload(true);
+                                    window.location.reload(true); //reload window after closing alert
                                 }
 
-                                function AddProtocolToTable( protocol_name, protocol_description){
-                                    var table = document.getElementById("protocol_body");
-                                    var row = document.createElement("tr");
+                                function AddProtocolToTable( protocol_name, protocol_description){ //function to add a protocol to the table
+                                    var table = document.getElementById("protocol_body"); //get the table
+                                    var row = document.createElement("tr"); //create a row
                                     var cell1 = document.createElement("td");
                                     var cell2 = document.createElement("td");
                                     var cell3 = document.createElement("td");
                                     
 
-                                    cell1.innerHTML = "<a class='btn btn-default' href='#'><em class='fa fa-trash'></em></a>";
+                                    cell1.innerHTML = "<a class='btn btn-default' href='#'><em class='fa fa-trash'></em></a>"; //create a button to delete the protocol
                                     
                                     cell2.innerHTML = protocol_name;
                                     cell3.innerHTML = protocol_description;
                                     
 
-                                    cell1.addEventListener("click", function(){
+                                    cell1.addEventListener("click", function(){ //add event listener to the button
                                         deleteProtocol(protocol_name);
                                     })
 
@@ -141,7 +140,7 @@
                                     row.appendChild(cell3);
                                     
 
-                                    table.appendChild(row);
+                                    table.appendChild(row); //add the row to the table
                                 }
                             
                               </script>

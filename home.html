@@ -21,17 +21,14 @@
             </button>
             <div id="navcol-1" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav ms-auto">
-                    <li class="nav-item" role="presentation"><a class="nav-link active" href="index.html">Home</a></li>
-                    <!-- <li class="nav-item" role="presentation"><a class="nav-link active" href="index.html">Logout</a></li> -->
-                    <!-- <li class="nav-item" role="presentation"><a class="nav-link" href="login.html">Dashboards</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="register.html">Schedules</a></li> -->
+                    <li id = "home" class="nav-item" role="presentation"><a class="nav-link active" href="index.html">Home</a></li>
                 </ul>
                 <button id="out" class="btn btn-primary" type="button">Sign Out</button>
             </div>
         </div>
     </nav>
     <div class="container bg-light">
-        <!-- <a class="small" href="password.html">Forgot Password?</a> -->
+
         <button id = "users" class="users" type="button" href="users.html">
             <span class="button__text">Users</span>
             <span class="button__icon">
@@ -39,15 +36,46 @@
             </span>
         </button>
 
-        <button id = "protocols" class="protocols" type="button" href="protocols.html">
+        <button id = "protocols" class="users" type="button" href="protocols.html">
             <span class="button__text">Protocols</span>
             <span class="button__icon">
                 <ion-icon name="book-outline"></ion-icon>
 
             </span>
         </button>
-        <!-- <a class="btn btn-primary btn-block btn-lg btn-signin" type="button" href="protocols.html">Protocols</a> -->
+        
     </div>
+    <div class="container bg-light">
+        <!-- <a class="small" href="password.html">Forgot Password?</a> -->
+        <button id = "events" class="users" type="button" href="events.html">
+            <span class="button__text">Events</span>
+            <span class="button__icon">
+                <ion-icon name="calendar-number-outline"></ion-icon>
+            </span>
+        </button>
+        <button id = "students" class="users" type="button" href="students.html">
+            <span class="button__text">Students</span>
+            <span class="button__icon">
+                <ion-icon name="school-outline"></ion-icon>
+            </span>
+        </button>       
+    </div>
+    <div class="container bg-light">
+        <button id = "groups" class="users" type="button" href="students.html">
+            <span class="button__text">Groups</span>
+            <span class="button__icon">
+                <ion-icon name="people-outline"></ion-icon>
+
+            </span>
+        </button>       
+        <button id = "specialties" class="users" type="button" href="events.html">
+            <span class="button__text">Specialties</span>
+            <span class="button__icon">
+                <ion-icon name="medical-outline"></ion-icon>
+            </span>
+        </button>
+    </div>
+
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
@@ -94,6 +122,34 @@
 
         protocols.addEventListener("click", function(){
             document.location.href = "protocols.html";
+            
+        })
+        //events button, takes us to events page
+        var events = document.getElementById("events");
+
+        events.addEventListener("click", function(){
+            document.location.href = "events.html";
+            
+        })
+
+        //students button, takes us to students page
+        var students = document.getElementById("students");
+
+        students.addEventListener("click", function(){
+            document.location.href = "students.html";
+            
+        })
+        var specialties = document.getElementById("specialties");
+
+        specialties.addEventListener("click", function(){
+            document.location.href = "specialties.html";
+            
+        })
+
+        var groups = document.getElementById("groups");
+
+        groups.addEventListener("click", function(){
+            document.location.href = "groups.html";
             
         })
     </script>

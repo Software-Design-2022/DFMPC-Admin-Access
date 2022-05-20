@@ -83,6 +83,105 @@
   width: 100px;
 
 }
+.schedules {
+  display: flex;
+    height: 50px;
+    padding: 0;
+    background: #0095775e;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    overflow: hidden;
+    font-family: "Quicksand", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background: #008167b4;
+  }
+  
+  .button:active {
+    background: #006e588a;
+  }
+  
+  .button__text,
+  .button__icon {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 24px;
+    color: #fff;
+    height: 100%;
+  }
+  
+  .button__icon {
+    font-size: 1.5em;
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  .event-color-c {
+    display: flex;
+    margin: 16px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.event-color-label {
+    flex: 1 0 auto;
+}
+
+.event-color {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    margin-right: 10px;
+    margin-left: 240px;
+    background: #5ac8fa;
+}
+
+.crud-color-row {
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+}
+
+.crud-color-c {
+    padding: 3px;
+    margin: 2px;
+}
+
+.crud-color {
+    position: relative;
+    min-width: 46px;
+    min-height: 46px;
+    margin: 2px;
+    cursor: pointer;
+    border-radius: 23px;
+    background: #5ac8fa;
+}
+
+.crud-color-c.selected,
+.crud-color-c:hover {
+    box-shadow: inset 0 0 0 3px #007bff;
+    border-radius: 48px;
+}
+
+.crud-color:before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -10px;
+    margin-left: -10px;
+    color: #f7f7f7;
+    font-size: 20px;
+    text-shadow: 0 0 3px #000;
+    display: none;
+}
+
+.crud-color-c.selected .crud-color:before {
+    display: block;
+}
 .footer {
   display: flex;
   padding: 10px;
@@ -98,6 +197,10 @@
   color: #FFFFFF;
   display: inline-block;
   text-align: center;
+}
+#calendar {
+  max-width: 560px;
+  margin: 0 auto;
 }
 
 
