@@ -198,6 +198,15 @@
   display: inline-block;
   text-align: center;
 }
+#calendar {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+table, td, th {  
+  border: 1px solid #ddd;
+  text-align: center;
+}
 
 
   
