@@ -84,7 +84,7 @@
     <div class="container">
         <div id='calendar'></div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.11.0/main.min.js"></script>
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
@@ -272,14 +272,15 @@
                     start: start,
                     end: end,
                 });
-                calendar.refetchEvents();
+                calendar.refetchEvents(); // refresh calendar
+                
                 }); 
         }
         //call function to populate events array
         getEvents();
 
         //initialise and create calendar
-            var calendar = new FullCalendar.Calendar(calendarEl, {
+            var calendar = new FullCalendar.Calendar(calendarEl, { //initialise calendar
                 schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
                 initialView: 'dayGridMonth', //initialview shows us calendar
                 selectable: true,
