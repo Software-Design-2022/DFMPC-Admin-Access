@@ -164,6 +164,7 @@
                                 var user_Type;
                                 var user_profile_photo;
                                 var user_id;
+                                var student;
 
                                 //create Modal Form variables
                                 var firstMod = document.getElementById('first');
@@ -188,6 +189,7 @@
                                         password_digest = doc.data().password_digest;
                                         user_Type = doc.data().user_Type;
                                         user_profile_photo = doc.data().user_profile_photo;
+                                        student = doc.data().Student_Number;
                                         
                                         
                                         AddItemsToTable(first_name, last_name, email, contact, user_id);
@@ -261,7 +263,8 @@
                                         user_FirstName: firstMod.value,
                                         user_LastName: lastMod.value,
                                         user_Type: user_Type, 
-                                        user_profile_photo : user_profile_photo
+                                        user_profile_photo : user_profile_photo,
+                                        Student_Number: student
                                 })
                                     .then(() =>{
                                         alert("User Updated Succefully");
