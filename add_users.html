@@ -156,6 +156,7 @@
             var email = document.getElementById("email").value;
             var password = document.getElementById("password").value;
             var contact = document.getElementById("contact").value;
+            var student = document.getElementById("student").value;
             await setDoc(doc(db, "users", PostKey), {
                 created_at: dateTime,
                 email: email,
@@ -166,7 +167,9 @@
                 user_FirstName: first_name,
                 user_LastName: last_name,
                 user_Type: "Student", //all users being added are students
-                user_profile_photo : "https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" //set default profile picture
+                user_profile_photo : "https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png", //set default profile picture
+                Student_Number: student
+
         });
         }
 
