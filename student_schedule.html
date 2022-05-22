@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>EVENTS</title>
+    <link rel="stylesheet" href="assets/css/Navigation-Dark-Clean.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/Google-Stylel-Login.css">
+    <link rel="stylesheet" href="assets/css/calendar.css">
+    <link href="node_modules/fullcalendar/main.css" rel="stylesheet">
+    <link href="node_modules/fullcalendar-scheduler/main.css" rel="stylesheet">
+    <script src="node_modules/fullcalendar/main.js"></script>
+    <script src="node_modules/fullcalendar-scheduler/main.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark navbar-expand-md bg-dark navigation-clean">
+        <div class="container">
+            <a class="navbar-brand" href="#">Student Placement System</a>
+
+
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navcol-1">
+                <span class="visually-hidden">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navcol-1" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav ms-auto">
+
+                </ul>
+                <button id="students" class="btn btn-secondary" type="button" href="students.html">Students</button>
+                <button id="home" class="btn btn-secondary" type="button" href="home.html">Home</button>
+                <button id="out" class="btn btn-primary" type="button" href="index.html">Sign Out</button>
+            </div>
+        </div>
+    </nav>
+    <hr>
+
+    <form>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="eventName">Event Name:</label>
+            <select id="activitySelector">
+                <option value="select">Select Specialty</option>
+                <option value="anatomy">Anatomy</option>
+                <option value="paeds">Paediatrics</option>
+                <option value="psych">Psychiatry</option>
+                <option value="obs">Obstetrics and Gynaecology</option>
+                <option value="ortho">Surgery and Orthopedics</option>
+                <option value="anesthesia">Anesthesia</option>
+                <option value="internal">Internal Medicine</option>
+          </select>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row"> 
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="fromDate">From:</label>
+            <input type="date" class="form-control" placeholder="Enter from date" id="fromDate">
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="toDate">To:</label>
+            <input type="date" class="form-control" id="toDate">
+          </div>
+        </div>
+
+      </div>
+
+      <button type="button" class="btn btn-primary" id="addEvent">Add Event</button>
+    
+    </form>
+    
+    <hr>
+    <div class="container">
+        <div id='calendar'></div>
+    </div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
+        import { query, where, collection, getFirestore, doc, getDocs, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+        //--------------------------CONFIGURATION----------------------------------------//
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZVQZO8XWR0UTPoSMLrRN7nSltUDW9Xzs",
+            authDomain: "dfmpc-student-placement-system.firebaseapp.com",
+            databaseURL: "https://dfmpc-student-placement-system-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "dfmpc-student-placement-system",
+            storageBucket: "dfmpc-student-placement-system.appspot.com",
+            messagingSenderId: "295214875936",
+            appId: "1:295214875936:web:546dcdb4f822d1c4c84345",
+            measurementId: "G-1JPG0HXVWQ"
+        };
+
+
+        const app = initializeApp(firebaseConfig);
+        function getData() {
+            firebaseConfig.da
+        }
+        const analytics = getAnalytics(app);
+        // retrieve student_id, PostKey and id stored from students page
+        var student_id = localStorage.getItem("myValue");
+        var PostKey = localStorage.getItem("myPostKey");
+        var id = localStorage.getItem("myId");
+        console.log(student_id,PostKey, id); //confirm student id is correct
+        
+
+        const db = getFirestore(); //Firestore
+
+        //initialise variables which we will be using to add documents to firestore
+        var start;
+        var duration; // is stored in weeks
+        var end = document.getElementById("toDate");
+        var date;
+        var specialtyName;
+        var specialtyId;
+
+        //create date variable to store time that a record was entered into the database
+        var today = new Date();
+        var today_date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + today.getMilliseconds();
+        var dateTime = today_date+' '+time;
+        
+        //function to add schedule information to database
+        async function addToSchedule(PostKey, dateTime, start, date, id, specialtyId, student_id, duration, specialtyName)
+        {
+            await setDoc(doc(db, "schedules", PostKey), {
+                created_at: dateTime,
+                updated_at: dateTime,
+                start_date: start,
+                end_date: date,
+                hospital_id: "1",
+                id: id,
+                specialty_id: specialtyId,
+                student_id: student_id,
+                specialty_duration: duration,
+                SpecialtyName: specialtyName
+        }).then(() =>{
+            alert("Schedule Updated Succefully");
+            window.location.reload(true); //reload window after closing alert
+        })
+        .catch((error)=>{
+            alert("Unsuccesful. Please Try Again." + error)
+        });
+        }
+   
+        //function to calculate the end date of a placement given the start date and duration
+        function getEndDate(start, duration)
+        {
+            duration = duration * 6.048* Math.pow(10,8);
+            var startDate = Date.parse(start)
+            var endDate = startDate + duration;
+            var end = new Date(endDate).toISOString().split('T')[0];
+            return end;
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            //create event listener for drop down menu selection
+            var activities = document.getElementById("activitySelector");
+            activities.addEventListener("change", function() {
+                
+                // actions are dependent on selection
+                //Each option defines a specific specialty, specialtyId and duration
+                //We autfill the end date of the placement based on start date and duration
+                if (activities.value == "anatomy")
+                {
+                    specialtyName = "Anatomy";
+                    specialtyId = 1;
+                    start = document.getElementById("fromDate").value;
+                    duration = 2;
+                    date = getEndDate(start, duration)
+                    end.value = date;
+                }
+                if (activities.value == "paeds")
+                {
+                    specialtyName = "Paediatrics";
+                    specialtyId = 2;
+                    start = document.getElementById("fromDate").value;
+                    duration = 4
+                    date = getEndDate(start, duration);
+                    end.value = date;
+                }
+                if (activities.value == "psych")
+                {
+                    specialtyName = "Psychiatry";
+                    specialtyId = 3;
+                    start = document.getElementById("fromDate").value;
+                    duration = 2
+                    date = getEndDate(start, duration);
+                    end.value = date;
+                }
+                if (activities.value == "obs")
+                {
+                    specialtyName = "Obstetrics and Gynaecology";
+                    specialtyId = 4;
+                    start = document.getElementById("fromDate").value;
+                    duration = 4
+                    date = getEndDate(start, duration);
+                    end.value = date;
+                }
+                if (activities.value == "ortho")
+                {
+                    specialtyName = "Surgery and Orthopedics";
+                    specialtyId = 5;
+                    start = document.getElementById("fromDate").value;
+                    duration = 6
+                    date = getEndDate(start, duration);
+                    end.value = date;
+                }
+                if (activities.value == "anesthesia")
+                {
+                    specialtyName = "Anesthesia";
+                    specialtyId = 6;
+                    start = document.getElementById("fromDate").value;
+                    duration = 3
+                    date = getEndDate(start, duration);
+                    end.value = date;
+                }
+                if (activities.value == "internal")
+                {
+                    specialtyName = "Internal Medicine";
+                    specialtyId = 7;
+                    start = document.getElementById("fromDate").value;
+                    duration = 6
+                    date = getEndDate(start, duration)
+                    end.value = date;
+                    
+                }
+                //button calls the function that submits information to database and reloads the page
+                var button = document.getElementById("addEvent");
+                button.addEventListener("click", function(){
+                    addToSchedule(PostKey, dateTime, start, date, id, specialtyId, student_id, duration, specialtyName);
+                });
+
+
+            });
+
+            //initialise calendar element
+            var calendarEl = document.getElementById('calendar');
+            var events =[]; //initialise empty array to store events
+            async function getEvents()
+            {
+                //query schedule documents matching the student_id so that we retrieve student specific schedule information
+                const q = query(collection(db, "schedules"), where("student_id", "==", student_id));
+                //retrieve these documents and add information to events array
+                const querySnapshot = await getDocs(q);
+                querySnapshot.forEach((doc) => {
+                    var name = doc.data().SpecialtyName;
+                    var start = doc.data().start_date;
+                    var end = doc.data().end_date;
+                    console.log(name, student_id);
+                    events.push({
+                    title: name,
+                    start: start,
+                    end: end,
+                });
+                calendar.refetchEvents();
+                }); 
+        }
+        //call function to populate events array
+        getEvents();
+
+        //initialise and create calendar
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+                initialView: 'dayGridMonth', //initialview shows us calendar
+                selectable: true,
+                editable: false,
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                customButtons: {
+                    today: {
+                        text: 'Today',
+                        click: function () {
+                            calendar.today(); //this button takes us to today's date. Only works when we are viewing another month, week or day
+                        }
+                    },
+                },
+                //function to add schedule events to calendar
+                events: function(info, successCallback, failureCallback ) {
+                    successCallback(events);
+                },
+            });
+
+            calendar.render();     
+        });
+        
+        
+    </script>
+
+    <script>
+        var sign_out = document.getElementById("out");
+
+        sign_out.addEventListener("click", function () {
+            document.location.href = "index.html";
+        });
+
+        var home_element = document.getElementById("home");
+
+        home_element.addEventListener("click", function () {
+            document.location.href = "home.html";
+        });
+        var students = document.getElementById("students");
+
+        students.addEventListener("click", function () {
+            document.location.href = "students.html";
+        });
+    </script>
+</body>

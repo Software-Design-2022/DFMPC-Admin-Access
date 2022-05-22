@@ -74,8 +74,9 @@
 
 
 
-        const db = getFirestore(); //realtime
+        const db = getFirestore(); //firestore
 
+        //initialise array and variables to store events information
         var start;
         var end;
         var id;
@@ -84,31 +85,37 @@
         
 
         document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar');
-            async function getEvents()
-        {
-            
-            const querySnapshot = await getDocs(collection(db, "events"));
-            querySnapshot.forEach((doc) => {
+            //initialise calendar element
 
-                name = doc.data().name;
-                start = doc.data().start_date;
-                end = doc.data().end_date;
-                events.push({
-                title: name,
-                start: start,
-                end: end
-            });
-            calendar.refetchEvents();
-            }); 
-        }
+            var calendarEl = document.getElementById('calendar');
+
+            //function that retrieves all events from events table and adds them to events array
+            async function getEvents()
+            {
+                const querySnapshot = await getDocs(collection(db, "events"));
+                querySnapshot.forEach((doc) => {
+
+                    name = doc.data().name;
+                    start = doc.data().start_date;
+                    end = doc.data().end_date;
+                    events.push({
+                    title: name,
+                    start: start,
+                    end: end
+                });
+                calendar.refetchEvents();
+                }); 
+            }
+
+            //call function to populate events array
         getEvents();
-        console.log(events);
+        console.log(events); //log events array to console
+        //Initialise and create calendar
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-                initialView: 'dayGridMonth',
-                selectable: true,
-                editable: false,
+                initialView: 'dayGridMonth', //initial view is month view
+                selectable: true, //day can be selected
+                editable: false, //calendar cannot be edited
                 headerToolbar: {
                     left: 'prev,next today, addEvent',
                     center: 'title',
@@ -118,17 +125,18 @@
                     today: {
                         text: 'Today',
                         click: function () {
-                            calendar.today();
+                            calendar.today(); //this button takes us to today's date. Only works when we are viewing another month, week or day
                         }
                     },
                     addEvent: {
                         text: 'Add Event',
                         click: function () {
-                            document.location.href = "add_events.html";
+                            document.location.href = "add_events.html"; //button takes us to add events form
                         }
                     },
 
                 },
+                //function to add schedule events to calendar
                 events: function(info, successCallback, failureCallback ) {
                     successCallback(events);
                 },
