@@ -111,13 +111,35 @@
                                 //----------------------------END OF CONFIGURATION---------------------------------//
 
                                 
-                                var postKey;//this key is used to find each childnode in users
+                                
                                 //the following variables are unseen attributes in user table
+                                var postKey;
                                 var created_at;
                                 var password_digest;
                                 var user_Type;
                                 var user_profile_photo;
                                 var user_id;
+
+                                //code to store postkey which will be used when adding new schedule information to firestore
+                                var keys = [];
+                                const querySnapshot = await getDocs(collection(db, "schedules"));
+                                querySnapshot.forEach((doc) => {
+
+                                    var schedule_id = doc.data().id;
+                                    keys.push(schedule_id);
+
+                                    });
+
+
+                                //set new Post Key and id
+                                var post_keys = keys.sort(function(a, b){return a - b;});
+                                var lastKey = post_keys[keys.length -1];
+                                console.log(lastKey);
+                                var newPostKey = parseInt(lastKey);
+                                
+                                var PostKey = newPostKey.toString() //convert to string to allow function to work
+                                var id = newPostKey + 1;
+                                console.log(typeof newPostKey);
 
                          
                                 
@@ -162,7 +184,7 @@
                                    
                                     cell4.innerHTML = user_id;
                                     
-                                    cell5.innerHTML = "<button class='btn btn-sm btn-primary m-2' data-bs-toggle='modal' data-bs-target='#myModal' type='button'>Student Schedule</button>";
+                                    cell5.innerHTML = "<button class='btn btn-sm btn-primary m-2' type='button'>Student Schedule</button>";
 
                                     row.appendChild(cell1);
                                     row.appendChild(cell2);
@@ -177,6 +199,10 @@
                                     //This allows us to chooose exactly what to edit.
                                     cell5.addEventListener("click", function(){
                                         document.location.href = "student_schedule.html?id=" + user_id; //redirect to student_schedule.html with user id as parameter to pass to student_schedule.js
+                                        
+                                        localStorage.setItem("myValue", user_id); //stores user_id value in order to allow us to use it to get student specific schedule
+                                        localStorage.setItem("myPostKey", PostKey); //stores postkey value
+                                        localStorage.setItem("myId", id); //stores id value for new schedule info that will be added
                                     });
 
 
@@ -196,11 +222,6 @@
                             
                                 home_element.addEventListener("click", function(){
                                     document.location.href = "home.html";
-                                });
-                                var add = document.getElementById("add");
-
-                                add.addEventListener("click", function(){
-                                    document.location.href = "add_users.html";
                                 });
                             </script>
                             

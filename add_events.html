@@ -101,7 +101,9 @@
         
     });
     //get value of last postKey which will the value of last id-1
-    var lastKey = keys[keys.length - 1];
+    var post_keys = keys.sort(function(a, b){return a - b;});
+    var lastKey = post_keys[keys.length -1];
+    console.log(lastKey);
     
     //set new Post Key and id
     var newPostKey = lastKey + 1;
