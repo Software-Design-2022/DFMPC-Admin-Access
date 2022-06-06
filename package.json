@@ -24,9 +24,6 @@
     "nyc": "^15.1.0"
   },
   "jest": {
-    "testPathIgnorePatterns": [
-      "./path/to/ignore/"
-    ],
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
     "coverageReporters": [
