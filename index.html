@@ -10,17 +10,16 @@
     <link rel="stylesheet" href="assets/css/Navigation-Dark-Clean.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 
-
 </head>
+
 <body>
-    
     <div class="login-card" id="login_page">
         <img class="profile-img-card" src="assets/img/logo.png" alt="">
         <p class="profile-name-card"> </p>
-        <form id = "form" class="form-signin">
+        <form id ="form" action="index.php" method="post" class="form-signin">
             <span class="reauth-email"> </span>
-            <input id="inputEmail" class="form-control" type="email" required="" autofocus="" placeholder="Email address">
-            <input id="inputPassword" class="form-control" type="password" required="" placeholder="Password">
+            <input id="inputEmail" name="email" class="form-control" type="email" required="" autofocus="" placeholder="Email address">
+            <input id="inputPassword" name="password" class="form-control" type="password" required="" placeholder="Password">
             <div class="checkbox">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="formCheck-2">
@@ -40,6 +39,7 @@
     <div class="footer">
         <footer class="ps_footer_text" >Copyright © 2020, Internet Explorers, University of The Witwatersrand, Johannesburg. All rights reserved.</footer>
     </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
     <script type="module">
         // Import the functions you need from the SDKs you need
@@ -68,6 +68,8 @@
         const auth = getAuth();
         const login_page = document.getElementById("login_page");
         const form = document.getElementById("form");
+
+        
 
         onAuthStateChanged(auth, (user) => {
             if (user)
@@ -113,6 +115,8 @@
         });
     })
     </script>
+    
+    
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 </body>
 </html>
