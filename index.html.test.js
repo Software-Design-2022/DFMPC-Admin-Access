@@ -33,6 +33,7 @@ describe('index.html', () => {
     it('renders a button element with text "Login"', () => {
         expect(container.querySelector('button').textContent).toBe('Sign in')
     })
+    
     it('correct user credentials', ()=> {
         dom = new JSDOM(html)
         container = dom.window.document.body

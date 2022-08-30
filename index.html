@@ -87,7 +87,7 @@
         const password = document.getElementById("inputPassword").value;
         //print user entered email and password to console
         console.log(email," ", password)
-
+        var attempt = 1; // Variable to count number of attempts.
         //use firebase authentication to check if user exists
         signInWithEmailAndPassword(auth, email, password)
         .then((user) => {
@@ -96,7 +96,7 @@
             window.location = "home.html";
             }
         })
-        .catch((error) => {
+        .catch((error) => {     
         console.log("error", error);
         Swal.fire({
             toast: true,
