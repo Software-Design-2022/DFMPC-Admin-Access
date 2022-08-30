@@ -31,8 +31,8 @@ const db = getFirestore();
 const html = fs.readFileSync(path.resolve(__dirname, './add_protocols.html'), 'utf8');
 
 
-const protocol_name = "Test Protocol";
-const protocol_description = "This is a test protocol";
+const protocol_name = "Unique Test Protocol";
+const protocol_description = "This is a unique test protocol";
 const add = require('./HelperFunctions.js');
 
 async function check () {
