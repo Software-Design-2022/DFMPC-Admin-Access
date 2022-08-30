@@ -41,7 +41,6 @@ describe('index.html', () => {
             expect(user).toMatch(/test@gmail.com/);
             expect(psw).toMatch(/test_pass123/);
         }
-        
     })
 
 
