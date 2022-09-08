@@ -28,5 +28,11 @@ describe('home.html', () => {
         expect(getByText(container, 'Sign Out')).toBeInTheDocument()
     })
 
+    it('renders a button element', () => {
+        expect(container.querySelector('button')).not.toBeNull()
+        expect(getByText(container, 'Sign Out')).toBeInTheDocument()
+    })
+
 
 })
+
