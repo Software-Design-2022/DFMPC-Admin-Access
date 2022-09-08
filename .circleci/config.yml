@@ -9,5 +9,7 @@ workflows:
         - node/test: 
             post-steps: 
               - codecov/upload:
-                token: CODECOV_TOKEN=bc2e56b0-7dfa-4d51-b660-a5ad1525deca
+                token: CODECOV_TOKEN=7e480bf1-bb7a-45c1-a129-697c43312a1f
+
+
                 
